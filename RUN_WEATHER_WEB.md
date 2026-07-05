@@ -2,22 +2,28 @@
 
 ## 구성
 
+- `app.py`: Flask 앱 엔트리포인트, 웹 화면과 `/api/weather` API 제공
 - `index.html`: 웹 화면
 - `static/app.css`: 화면 스타일
 - `static/app.js`: 브라우저에서 `/api/weather` 호출
-- `api/weather.py`: Vercel Python 서버리스 API
 - `weather_service.py`: Open-Meteo 호출 및 Matplotlib 그래프 생성
-- `weather_web_app.py`: 로컬 테스트용 Python 웹 서버
-- `requirements.txt`: Vercel Python 함수 의존성
+- `weather_web_app.py`: 기존 실행명 호환용 Flask 실행 파일
+- `requirements.txt`: Flask, Matplotlib 의존성
 - `.python-version`: Vercel Python 버전 지정
-- `vercel.json`: Vercel 함수 옵션 및 라우팅 설정
+- `vercel.json`: Vercel이 모든 요청을 Flask 앱으로 보내도록 설정
 
 ## 로컬 실행
 
-프로젝트 폴더에서 아래 명령을 실행합니다.
+필요한 패키지를 설치합니다.
 
 ```powershell
-& 'C:\Users\hanchae0820\AppData\Local\Python\bin\python.exe' weather_web_app.py
+& 'C:\Users\hanchae0820\AppData\Local\Python\bin\python.exe' -m pip install -r requirements.txt
+```
+
+Flask 앱을 실행합니다.
+
+```powershell
+& 'C:\Users\hanchae0820\AppData\Local\Python\bin\python.exe' app.py
 ```
 
 브라우저에서 아래 주소를 엽니다.
@@ -51,13 +57,13 @@ GitHub 저장소를 Vercel에 연결하는 경우:
 
 ## Vercel 동작 방식
 
-- 정적 파일인 `index.html`, `static/app.css`, `static/app.js`는 Vercel에서 그대로 호스팅됩니다.
-- 브라우저가 `/api/weather?location=Seoul`로 요청합니다.
-- Vercel이 `api/weather.py`의 `handler`를 서버리스 함수로 실행합니다.
-- 서버리스 함수가 Open-Meteo API에서 오늘 시간별 날씨를 가져오고 Matplotlib 그래프를 base64 PNG로 만들어 반환합니다.
+- Vercel Python 런타임은 `app.py`의 최상위 `app` Flask 객체를 WSGI 앱으로 인식합니다.
+- `vercel.json`의 rewrite 설정이 모든 요청을 `/app.py`로 전달합니다.
+- Flask가 `/`에서는 `index.html`을 반환하고, `/static/*`는 정적 파일을 반환합니다.
+- `/api/weather?location=Seoul` 요청은 Flask API 라우트에서 처리합니다.
+- API는 Open-Meteo에서 오늘 시간별 날씨를 가져오고 Matplotlib 그래프를 base64 PNG로 만들어 JSON으로 반환합니다.
 
 ## 참고
 
-- Vercel Python 런타임은 `requirements.txt`를 보고 `matplotlib`을 설치합니다.
+- Vercel은 `requirements.txt`를 보고 Flask와 Matplotlib을 설치합니다.
 - `.python-version`은 Vercel에서 Python `3.12`를 사용하도록 지정합니다.
-- `vercel.json`은 API 함수 제한 시간과 번들 제외 파일을 설정합니다.

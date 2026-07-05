@@ -1,15 +1,15 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "api/**/*.py": {
+    "app.py": {
       "maxDuration": 30,
-      "excludeFiles": "{__pycache__/**,*.png,RUN_WEATHER_WEB.md}"
+      "excludeFiles": "{api/**,__pycache__/**,**/__pycache__/**,*.png,RUN_WEATHER_WEB.md}"
     }
   },
   "rewrites": [
     {
-      "source": "/",
-      "destination": "/index.html"
+      "source": "/(.*)",
+      "destination": "/app.py"
     }
   ]
 }
