@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Weather Search</title>
+    <link rel="stylesheet" href="static/app.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="search-panel">
+        <div>
+          <p class="eyebrow">Open-Meteo Forecast</p>
+          <h1>오늘 시간별 날씨 검색</h1>
+        </div>
+        <form id="weather-form" class="search-form">
+          <label for="location-input">위치</label>
+          <div class="search-row">
+            <input id="location-input" name="location" type="search" value="Seoul" autocomplete="off" required>
+            <button type="submit">검색</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="status" class="status" aria-live="polite">위치를 입력하고 검색하세요.</section>
+
+      <section id="result" class="result" hidden>
+        <div class="summary-grid">
+          <article>
+            <span>현재</span>
+            <strong id="current-temp"></strong>
+            <small id="current-weather"></small>
+          </article>
+          <article>
+            <span>최고</span>
+            <strong id="high-temp"></strong>
+            <small>오늘 예보 기준</small>
+          </article>
+          <article>
+            <span>최저</span>
+            <strong id="low-temp"></strong>
+            <small>오늘 예보 기준</small>
+          </article>
+          <article>
+            <span>평균</span>
+            <strong id="avg-temp"></strong>
+            <small id="place-name"></small>
+          </article>
+        </div>
+
+        <div class="graph-wrap">
+          <img id="temperature-graph" alt="오늘 시간별 기온 그래프">
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>시간</th>
+                <th>날씨</th>
+                <th>기온</th>
+                <th>습도</th>
+                <th>강수확률</th>
+                <th>풍속</th>
+              </tr>
+            </thead>
+            <tbody id="hourly-table"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <script src="static/app.js"></script>
+  </body>
+</html>
